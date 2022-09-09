@@ -35,39 +35,7 @@ app
 
     // MongoDB
     mongoose.Promise = Promise;
-    mongoose.connect(
-      Keys.MONGODB_URI,
-      { useNewUrlParser: true },
-      async (err) => {
-        if (err) console.log(err);
-        else {
-          console.log("connected to db!!");
-          let webmaster = await users.findOne({
-            role: "admin Superieur",
-          });
-          if (!webmaster) {
-            let password = "adminpass";
-            const salt = await bcrypt.genSalt(10);
-            const hashed = await bcrypt.hash(password, salt);
-            let new_user = new users({
-              nom: "zen",
-              prenom: "manager",
-              email: "zenmanager@manager.com",
-              telephone: "26250365",
-              pays: "tunisie",
-              mot_passe: hashed,
-              role: "admin Superieur",
-            });
-            await new_user.save();
-            console.log(`webmaster account has been added : ${new_user.email}`);
-          } else {
-            console.log(
-              ` webmaster account already exist \n webmaster email : ${webmaster.email}`
-            );
-          }
-        }
-      }
-    );
+    mongoose.connect(Keys.MONGODB_URI, { useNewUrlParser: true });
     const db = mongoose.connection;
     db.on("error", console.error.bind(console, "connection error:"));
 
